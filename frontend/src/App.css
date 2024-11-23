@@ -556,3 +556,419 @@
   border-radius: 50%;
   cursor: pointer;
 }
+
+.profileContainer {
+  max-width: 600px;
+  margin: 50px auto;
+  padding: 20px;
+  font-family: 'Arial', sans-serif;
+  text-align: center;
+  color: #333;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.backButton {
+  background-color: #f3f4f6;
+  color: #333;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 5px;
+  font-size: 14px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.backButton:hover {
+  background-color: #ddd;
+}
+
+.profileTitle {
+  font-size: 28px;
+  font-weight: bold;
+  color: #444;
+}
+
+.profileCard {
+  background: linear-gradient(145deg, #ffffff, #f3f4f6);
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  padding: 30px;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.avatarContainer {
+  position: relative;
+}
+
+.profileAvatar {
+  width: 150px;
+  height: 150px;
+  border-radius: 50%;
+  border: 3px solid #ddd;
+  margin-bottom: 20px;
+}
+
+.avatarInput {
+  margin-top: 10px;
+  width: 100%;
+  padding: 10px;
+  font-size: 14px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+}
+
+.profileInfo {
+  margin-top: 20px;
+  text-align: left;
+}
+
+.inputField {
+  display: block;
+  width: 100%;
+  padding: 12px;
+  margin-bottom: 15px;
+  font-size: 14px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.editButton,
+.saveButton,
+.cancelButton {
+  margin-top: 10px;
+  padding: 10px 20px;
+  font-size: 14px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.editButton {
+  background-color: #007bff;
+  color: #fff;
+}
+
+.saveButton {
+  background-color: #28a745;
+  color: #fff;
+}
+
+.cancelButton {
+  background-color: #dc3545;
+  color: #fff;
+  margin-left: 10px;
+}
+
+.editButton:hover {
+  background-color: #0056b3;
+}
+
+.saveButton:hover {
+  background-color: #218838;
+}
+
+.cancelButton:hover {
+  background-color: #c82333;
+}
+
+.buttonGroup {
+  display: flex;
+  justify-content: center;
+}
+
+.modalOverlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+.modalContent {
+  background-color: #fff;
+  padding: 30px;
+  border-radius: 10px;
+  max-width: 600px;
+  width: 90%;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.3);
+  position: relative;
+}
+
+.closeModalButton {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background: none;
+  border: none;
+  font-size: 18px;
+  cursor: pointer;
+  color: #333;
+}
+
+.closeModalButton:hover {
+  color: #dc3545;
+}
+
+.profileContent {
+  text-align: left;
+}
+
+.profileField {
+  margin-bottom: 10px;
+  font-size: 16px;
+  line-height: 1.5;
+}
+
+.profileFieldinput {
+  display: block;
+  margin-top: 5px;
+  padding: 5px;
+  font-size: 14px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  width: 100%;
+}
+
+.editProfileButton,
+.saveProfileButton,
+.cancelEditButton {
+  display: inline-block;
+  margin-top: 15px;
+  padding: 10px 20px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.editProfileButton:hover,
+.saveProfileButton:hover {
+  background-color: #0056b3;
+}
+
+.cancelEditButton {
+  background-color: #dc3545;
+  margin-left: 10px;
+}
+
+.cancelEditButton:hover {
+  background-color: #a71d2a;
+}
+.profileAvatar {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.avatarImage {
+  width: 150px;
+  height: 150px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid #ddd;
+}
+
+.avatarUploadInput {
+  background-color: #42cc7c;
+  margin-top: 10px;
+  font-size: 14px;
+}
+.modalContent {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  max-width: 500px;
+  margin: 0 auto;
+  background: white;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  position: relative;
+}
+
+.modalOverlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.modalContent {
+  background: #fff;
+  padding: 20px;
+  border-radius: 10px;
+  width: 400px;
+}
+
+.closeModalButton {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  border: none;
+  background: none;
+  font-size: 20px;
+  cursor: pointer;
+}
+
+.profileContent {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.profileAvatar {
+  margin-bottom: 20px;
+}
+
+.avatarImage {
+  border-radius: 50%;
+}
+
+.avatarUploadInput {
+  margin-top: 10px;
+}
+
+.profileDetails,
+.profileEditForm {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.profileField {
+  margin-bottom: 10px;
+}
+
+.editField {
+  margin-top: 5px;
+  padding: 5px;
+  width: 100%;
+}
+
+.saveProfileButton {
+  margin-top: 10px;
+  padding: 10px 20px;
+  background-color: #4caf50;
+  color: white;
+  border: none;
+  cursor: pointer;
+}
+
+.editProfileButton {
+  background-color: #ffa500;
+  color: white;
+  padding: 10px;
+  border: none;
+  cursor: pointer;
+}
+
+.modalOverlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.modalContent {
+  background: #fff;
+  padding: 20px;
+  border-radius: 10px;
+  width: 400px;
+  height: 600px;
+}
+
+.closeModalButton {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  border: none;
+  background: none;
+  font-size: 20px;
+  cursor: pointer;
+}
+
+.profileContent {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.profileAvatar {
+  margin-bottom: 20px;
+}
+
+.avatarImage {
+  border-radius: 50%;
+}
+
+.avatarUploadInput {
+  margin-top: 1px;
+}
+
+.noFileSelectedText {
+  display: block;
+  margin-top: 5px;
+  font-size: 12px;
+  color: #888;
+}
+
+.profileDetails,
+.profileEditForm {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.profileField {
+  margin-bottom: 10px;
+}
+
+.editField {
+  margin-top: 15px;
+  padding: 5px;
+  width: 100%;
+}
+
+.saveProfileButton {
+  margin-top: 10px;
+  padding: 10px 20px;
+  background-color: #4caf50;
+  color: white;
+  border: none;
+  cursor: pointer;
+}
+
+.editProfileButton {
+  background-color: #ffa500;
+  color: white;
+  padding: 10px;
+  border: none;
+  cursor: pointer;
+}

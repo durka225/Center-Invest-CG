@@ -1,26 +1,34 @@
 import React, { useState } from 'react';
 import { FaStar } from 'react-icons/fa';
-import { useNavigate } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom';
+import { Line } from 'react-chartjs-2';
+import { Chart as ChartJS, CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend } from 'chart.js';
 
-const ToDoList = (props) => {
-  const navigate = useNavigate()
+ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend);
 
+const ToDoList = () => {
+  const navigate = useNavigate();
+
+  // State for tasks and modal
   const [tasks, setTasks] = useState([]);
   const [taskInput, setTaskInput] = useState('');
-
   const [descriptionInput, setDescriptionInput] = useState('');
   const [priorityInput, setPriorityInput] = useState('низкий');
-
   const [deadlineInput, setDeadlineInput] = useState('');
-  const [isModalOpen, setIsModalOpen] = useState(false); // Состояние для модального окна
-  const onButtonClickProfile = () =>{
-    navigate("/profile")
-  }
-  const onButtonClickBack = () => {
-    window.history.go(-1);
-    return false;
-  };
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
+  // State for profile modal and data
+  const [isProfileModalOpen, setIsProfileModalOpen] = useState(false);
+  const [isEditing, setIsEditing] = useState(false);
+  const [profileData, setProfileData] = useState({
+    firstName: 'Иван',
+    lastName: 'Иванов',
+    email: 'ivan.ivanov@example.com',
+    registrationDate: '12.03.2023',
+  });
+  const [editData, setEditData] = useState({ ...profileData });
+
+  // Task management functions
   const addTask = () => {
     if (taskInput.trim() === '') {
       alert('Введите текст задачи!');
@@ -70,23 +78,89 @@ const ToDoList = (props) => {
     );
   };
 
-  const isTaskOverdue = (deadline) => {
-    const currentDate = new Date();
-    const taskDate = new Date(deadline);
-    return taskDate < currentDate;
+  // Chart data generation
+  const groupTasksByDate = () => {
+    const taskCountPerDay = {};
+    tasks.forEach((task) => {
+      const date = new Date(task.deadline).toLocaleDateString();
+      taskCountPerDay[date] = taskCountPerDay[date] ? taskCountPerDay[date] + 1 : 1;
+    });
+    return taskCountPerDay;
+  };
+
+  const taskCountPerDay = groupTasksByDate();
+  const dates = Object.keys(taskCountPerDay);
+  const taskCounts = Object.values(taskCountPerDay);
+
+  const data = {
+    labels: dates,
+    datasets: [
+      {
+        label: 'Количество задач',
+        data: taskCounts,
+        fill: false,
+        borderColor: '#4caf50',
+        tension: 0.1,
+      },
+    ],
+  };
+
+  const options = {
+    responsive: true,
+    scales: {
+      x: {
+        title: {
+          display: true,
+          text: 'Дата',
+        },
+      },
+      y: {
+        title: {
+          display: true,
+          text: 'Количество задач',
+        },
+        beginAtZero: true,
+      },
+    },
+  };
+
+  // Profile modal handling
+  const handleAvatarChange = (event) => {
+    const file = event.target.files[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onload = () => {
+        setEditData({ ...editData, avatar: reader.result });
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+
+  const saveProfile = () => {
+    setProfileData(editData);
+    setIsEditing(false);
+  };
+
+  const onButtonClickBack = () => {
+    window.history.go(-1);
+    return false;
   };
 
   return (
     <div className="toDoContainer">
-      <div>
-      <button
-        onClick={onButtonClickProfile}
-        className="buttonProfile"
-      >
+      {/* Profile Button */}
+      <button onClick={() => setIsProfileModalOpen(true)} className="buttonProfile">
+        Профиль
       </button>
-      </div>
+
       <p className="textToDoList">Создание списка задач</p>
 
+      {/* Task Chart */}
+      <div className="chartContainer">
+        <Line data={data} options={options} />
+      </div>
+
+      {/* Task Input Section */}
       <div className="taskInputContainer">
         <input
           type="text"
@@ -101,18 +175,17 @@ const ToDoList = (props) => {
           onChange={(e) => setDescriptionInput(e.target.value)}
           className="descriptionInput"
         />
-        <p className='input'>Выберите приоритет</p>
+        <p className="input">Выберите приоритет</p>
         <select
           value={priorityInput}
           onChange={(e) => setPriorityInput(e.target.value)}
           className="priorityInput"
         >
-          <option value="низкий">Низкий</option>
+          <option value="низкий">Похуй</option>
           <option value="средний">Средний</option>
-          <option value="высокий">Высокий</option>
+          <option value="высокий">ЕБАТЬ сроки горят</option>
         </select>
-        <div className='dataText'>Укажите дату, до которой</div>
-        <div className='dataText'>необходимо выполнить задание</div>
+        <div className="dataText">Укажите дату, до которой необходимо выполнить задание</div>
         <input
           type="date"
           value={deadlineInput}
@@ -123,23 +196,20 @@ const ToDoList = (props) => {
           Добавить
         </button>
       </div>
+
+      {/* Open Tasks Modal Button */}
       <button onClick={() => setIsModalOpen(true)} className="openModalButton">
         Открыть задачи
       </button>
+
+      {/* Task Modal */}
       {isModalOpen && (
         <div className="modalOverlay">
           <div className="modalContent">
-            <button onClick={() => setIsModalOpen(false)} className="closeModalButton">
-              X
-            </button>
+            <button onClick={() => setIsModalOpen(false)} className="closeModalButton">X</button>
             <ul className="taskList">
               {tasks.map((task) => (
-                <li
-                  key={task.id}
-                  className={`taskItem ${task.completed ? 'completed' : ''} ${
-                    isTaskOverdue(task.deadline) ? 'overdue' : ''
-                  }`}
-                >
+                <li key={task.id} className={`taskItem ${task.completed ? 'completed' : ''}`}>
                   <div className="taskContainer">
                     <div>
                       <div className="taskTitle">
@@ -154,16 +224,8 @@ const ToDoList = (props) => {
                       <div className="taskDeadline">
                         Срок: {new Date(task.deadline).toLocaleDateString()}
                       </div>
-                      {isTaskOverdue(task.deadline) && (
-                        <div className="overdueWarning">Просрочено!</div>
-                      )}
                     </div>
-                    <button
-                      onClick={() => deleteTask(task.id)}
-                      className="deleteButton"
-                    >
-                      X
-                    </button>
+                    <button onClick={() => deleteTask(task.id)} className="deleteButton">X</button>
                   </div>
                 </li>
               ))}
@@ -172,6 +234,65 @@ const ToDoList = (props) => {
         </div>
       )}
 
+      {/* Profile Modal */}
+      {isProfileModalOpen && (
+        <div className="modalOverlay">
+          <div className="modalContent">
+            <button onClick={() => setIsProfileModalOpen(false)} className="closeModalButton">X</button>
+            <div className="profileContent">
+              <h2>Профиль пользователя</h2>
+              <div className="profileAvatar">
+                <img
+                  src={profileData.avatar || 'https://via.placeholder.com/150'}
+                  alt="Аватар пользователя"
+                  className="avatarImage"
+                />
+                {isEditing && (
+                  <>
+                    <input
+                      type="file"
+                      accept="image/*"
+                      onChange={handleAvatarChange}
+                      className="avatarUploadInput"
+                    />
+                  </>
+                )}
+              </div>
+              {!isEditing ? (
+                <>
+                  <div className="profileField"><strong>Имя:</strong> {profileData.firstName}</div>
+                  <div className="profileField"><strong>Фамилия:</strong> {profileData.lastName}</div>
+                  <div className="profileField"><strong>Email:</strong> {profileData.email}</div>
+                  <div className="profileField"><strong>Дата регистрации:</strong> {profileData.registrationDate}</div>
+                  <button onClick={() => setIsEditing(true)} className="editButton">Редактировать</button>
+                </>
+              ) : (
+                <>
+                  <input
+                    type="text"
+                    value={editData.firstName}
+                    onChange={(e) => setEditData({ ...editData, firstName: e.target.value })}
+                    className="editField"
+                  />
+                  <input
+                    type="text"
+                    value={editData.lastName}
+                    onChange={(e) => setEditData({ ...editData, lastName: e.target.value })}
+                    className="editField"
+                  />
+                  <input
+                    type="email"
+                    value={editData.email}
+                    onChange={(e) => setEditData({ ...editData, email: e.target.value })}
+                    className="editField"
+                  />
+                  <button onClick={saveProfile} className="saveButton">Сохранить</button>
+                </>
+              )}
+            </div>
+          </div>
+        </div>
+      )}
       <div className={'buttonAuthBack'}>
         <input
           className={'button'}
