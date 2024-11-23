@@ -1,0 +1,558 @@
+.mainContainer {
+  flex-direction: column;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+}
+
+.button{
+  border: none;
+  background: rgb(71, 177, 133);
+  color: white;
+  padding: 12px 24px;
+  margin: 8px;
+  font-size: 24px;
+  border-radius: 8px;
+  cursor: pointer;
+}
+.button:hover{
+  background-color: #418b57;
+}
+.mainButton {
+  border: none;
+  background: rgb(71, 177, 133);
+  color: white;
+  padding: 12px 24px;
+  margin: 8px;
+  font-size: 24px;
+  border-radius: 8px;
+  text-justify: center;
+  text-align: center;
+  cursor: pointer;
+}
+.mainButton:hover{
+  background-color: #418b57;
+}
+.authContainer {
+  flex-direction: column;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 32px;
+}
+
+.titleContainer {
+  display: flex;
+  flex-direction: column;
+  font-size: 64px;
+  font-weight: bolder;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+
+.resultContainer,
+.historyItem {
+  flex-direction: row;
+  display: flex;
+  width: 400px;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.historyContainer {
+  flex-direction: column;
+  display: flex;
+  height: 200px;
+  align-items: center;
+  flex-grow: 5;
+  justify-content: flex-start;
+}
+
+.buttonContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 80px;
+}
+
+.buttonAuthBack {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  justify-content: center;
+  position: absolute;
+  bottom: 0;
+  margin-top: 20px;
+  position: relative;
+}
+
+.inputContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+}
+
+.inputContainer > .errorLabel {
+  color: red;
+  font-size: 12px;
+}
+
+.inputBox {
+  height: 48px;
+  width: 400px;
+  font-size: large;
+  border-radius: 8px;
+  border: 1px solid grey;
+  padding-left: 8px;
+}
+.label {
+  display: block;
+  font-size: larger;
+  color: rgb(0, 0, 0);
+  padding: 5px;
+}
+
+.input {
+  font-size:larger;
+  padding: 5px;
+  margin: 2px;
+}
+
+.regButton {
+  color: white;
+  background-color: rgb(71, 177, 133);
+  border-radius: 5px;
+  font-size: larger;
+  display: block;
+  padding: 5px;
+  margin: 10px auto;
+}
+.regButton:hover {
+  background-color: #187434;
+}
+.messages {
+  display: flex;
+  justify-content: center;
+}
+
+.error {
+  display: flex;
+  background-color: red;
+  border-radius: 15px;
+  color: white;
+  width: fit-content;
+  height: 70px;
+  padding: 5px;
+  font:bolder;
+  align-items: center;
+  justify-content: center;
+}
+
+.success {
+  display: block;
+  background-color: lightblue;
+  color: black;
+  width: fit-content;
+  height: 50px;
+  padding: 5px;
+}
+.App {
+  text-align: center;
+  background-color: rgb(255, 255, 255);
+}
+
+.textToDoList{
+  flex-direction: column;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 38px;
+  font: bolder;
+}
+.toDoContainer{
+  background-color: rgb(255, 255, 255);
+  flex-direction: column;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+}
+.taskInputContainer{
+  flex-direction: column;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 24px;
+}
+.taskInput {
+  height: 48px;
+  width: 260px;
+  font-size: large;
+  border-radius: 8px;
+  border: 1px solid grey;
+  padding-left: 8px;
+}
+.addButton{
+  border: none;
+  background: rgb(71, 177, 133);
+  color: white;
+  padding: 12px 24px;
+  margin: 8px;
+  font-size: 24px;
+  border-radius: 8px;
+  cursor: pointer;
+}
+.deleteButton{
+  justify-content: space-between;
+  border: none;
+  background: rgb(255, 0, 0);
+  color: white;
+  padding: 5px 8px;
+  margin: 8px;
+  font-size: 12px;
+  border-radius: 50px;
+  font-weight: 600;
+  cursor: pointer;
+  align-items: center;
+  vertical-align: middle;
+}
+
+.taskTitle {
+  font-size: 18px;
+  font-weight: bold;
+  color: #333;
+  margin-bottom: 5px;
+}
+
+.taskPriority {
+  font-size: 14px;
+  font-weight: bold;
+  margin-left: 5px;
+}
+
+.taskPriority.низкий {
+  color: green;
+}
+
+.taskPriority.средний {
+  color: orange;
+}
+
+.taskPriority.высокий {
+  color: red;
+}
+
+
+.taskText {
+  flex: 1;
+  white-space: pre-wrap;
+  word-break: break-word;
+  margin-right: 10px;
+  font-size: 16px;
+  color: #333;
+  text-align: center;
+}
+.taskList {
+  max-height: 400px;
+  overflow-y: auto;
+  overflow-x: hidden;
+  padding: 0;
+  margin: 0 0 20px 0;
+  list-style: none;
+}
+
+
+.toDoContainer {
+  max-width: 600px;
+  margin: 0 auto;
+  padding: 20px;
+  font-family: Arial, sans-serif;
+}
+
+.taskInputContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+.descriptionInput{
+  height: 120px;
+  width: 260px;
+  resize: none;
+  text-align: start;
+  text-justify: auto;
+  font-size: large;
+  border-radius: 8px;
+  border: 1px solid grey;
+  padding-left: 8px;
+}
+.taskInput{
+  padding: 10px;
+  font-size: 14px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+.addButton {
+  padding: 10px 20px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.addButton:hover {
+  background-color: #0056b3;
+}
+
+.feedbackMessage {
+  color: green;
+  margin-bottom: 10px;
+}
+
+.taskList {
+  list-style: none;
+  padding: 0;
+}
+
+.taskDetails {
+  margin-bottom: 10px;
+}
+
+.taskDescription {
+  font-size: 14px;
+  color: #555;
+  margin-bottom: 5px;
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+
+.taskPriority {
+  font-size: 14px;
+  font-weight: bold;
+}
+
+.taskPriority.низкий {
+  color: green;
+}
+
+.taskPriority.средний {
+  color: orange;
+}
+
+.taskPriority.высокий {
+  color: red;
+}
+
+.taskContainer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center; 
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.taskItem {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center; 
+  margin-bottom: 10px;
+  background: #f9f9f9;
+  padding: 10px;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  width: 100%;
+  word-break: break-word;
+}
+
+.deleteButton {
+  background: #ff4d4d;
+  color: white;
+  border: none;
+  border-radius: 50%;
+  width: 30px;
+  height: 30px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  font-size: 16px;
+  margin-left: 10px;
+}
+
+.deleteButton:hover {
+  background-color: #be2837;
+}
+
+.completed .taskItem {
+  text-decoration: line-through;
+  color: gray;
+}
+
+.priorityInput {
+  padding: 10px;
+  font-size: 14px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  margin-bottom: 10px;
+  width: 100%;
+  box-sizing: border-box;
+}
+.priorityStars {
+  display: flex;
+  gap: 4px;
+  margin-top: 5px;
+}
+
+.taskPriority {
+  font-size: 14px;
+  font-weight: bold;
+  margin-left: 5px;
+}
+
+.priorityLabel {
+  font-size: 14px;
+  font-weight: bold;
+}
+
+.priorityStars {
+  display: inline-flex;
+  gap: 2px;
+  margin-left: 5px;
+}
+
+.starsContainer {
+  font-size: 14px;
+  color: #555;
+}
+
+.toggleTasksButton {
+  margin-top: 10px;
+  padding: 10px 20px;
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.toggleTasksButton:hover {
+  background-color: #0056b3;
+}
+
+.modalOverlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+.modalContent {
+  background-color: #fff;
+  border-radius: 8px;
+  padding: 20px;
+  width: 90%;
+  max-width: 500px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.25);
+  position: relative;
+  animation: slideDown 0.3s ease-out;
+}
+
+.closeModalButton {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background: #423f3f;
+  color: #fff;
+  border: none;
+  width: 30px;
+  height: 30px;
+  border-radius: 25%;
+  cursor: pointer;
+  font-size: 16px;
+  font-weight: 400;
+}
+
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.openModalButton {
+  margin-top: 10px;
+  padding: 10px 20px;
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.openModalButton:hover {
+  background-color: #0056b3;
+}
+
+.deadlineInput {
+  margin-top: 10px;
+  padding: 5px;
+  font-size: 14px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+.taskDeadline {
+  font-size: 12px;
+  color: #555;
+  margin-top: 5px;
+}
+
+.overdue {
+  border: 1px solid #ff5f5f;
+  background-color: #ffe5e5;
+}
+
+.overdueWarning {
+  font-size: 12px;
+  color: #ff5f5f;
+  font-weight: bold;
+}
+
+.dataText{
+  position:static;
+  font-size:large;
+  font-weight: bold;
+}
+
+.buttonProfile{
+  position: absolute; 
+  top: 3%; 
+  right: 2%;
+  border: none;
+  background: rgb(71, 177, 133);
+  color: white;
+  height: 70px;
+  width: 70px;
+  margin: 8px;
+  border-radius: 50%;
+  cursor: pointer;
+}
