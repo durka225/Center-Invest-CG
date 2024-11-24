@@ -1,44 +1,50 @@
-import React, { useState } from 'react'
-import { useNavigate } from 'react-router-dom'
+import React, { useState } from 'react';
+import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 
-const Login = (props) => {
-  const [email, setEmail] = useState('')
-  const [password, setPassword] = useState('')
-  const [emailError, setEmailError] = useState('')
-  const [passwordError, setPasswordError] = useState('')
+const Login = ({ setToken }) => {
+  const [username, setUsername] = useState('');
+  const [password, setPassword] = useState('');
+  const [passwordError, setPasswordError] = useState('');
+  const [usernameError, setUsernameError] = useState('');
+  const navigate = useNavigate();  // Инициализируем хук navigate
 
-  const navigate = useNavigate()
   const onButtonClickBack = () => {
     window.history.go(-1); 
     return false;
   }
-  const onButtonClick = () => {
 
-    setEmailError('')
-    setPasswordError('')
-  
-    if ('' === email) {
-      setEmailError('Пожалуйста введите свою почту')
-      return
-    }
-  
-    if (!/^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/.test(email)) {
-      setEmailError('Пожалуйста введите правильный адресс эл.почты')
-      return
-    }
-  
-    if ('' === password) {
-      setPasswordError('Пожалуйста введите пароль')
-      return
-    }
-  
-    /*if (password.length < 7) {
-      setPasswordError('Пароль должен состоять из 8 и более')
-      return
-    }*/
+  const handleSubmit = async (e) => {
+    e.preventDefault();
 
-    navigate('/toDoList')
+    setPasswordError('');
+    setUsernameError('');
+
+    if (username === '') {
+      setUsernameError('Пожалуйста введите логин');
+      return;
+    }
+
+    if (password === '') {
+      setPasswordError('Пожалуйста введите пароль');
+      return;
+    }
+
+    try {
+      const response = await axios.post('http://localhost:5000/login', {
+          username,
+          password
+      });
+      const token = response.data.access_token;
+      console.log("Метка")
+      localStorage.setItem('token', token);  // Сохраняем токен в localStorage
+      console.log("Метка 1")  // Локальное сохранение, если нужно
+      console.log("Метка 2")
+      navigate('/profile');  // Перенаправляем на страницу профиля
+  } catch (error) {
+      alert('Ошибка входа');
   }
+  };
 
   return (
     <div className={'mainContainer'}>
@@ -48,33 +54,44 @@ const Login = (props) => {
       <br />
       <div className={'inputContainer'}>
         <input
-          value={email}
-          placeholder="Введите адрес эл.почты"
-          onChange={(ev) => setEmail(ev.target.value)}
+          type="text"
+          placeholder="Введите логин"
+          value={username}
+          onChange={(e) => setUsername(e.target.value)}
           className={'inputBox'}
         />
-        <label className="errorLabel">{emailError}</label>
+        <label className="errorLabel">{usernameError}</label>
       </div>
       <br />
       <div className={'inputContainer'}>
         <input
-          value={password}
-          placeholder="Введите пароль"
-          onChange={(ev) => setPassword(ev.target.value)}
           type="password"
+          placeholder="Введите пароль"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
           className={'inputBox'}
         />
         <label className="errorLabel">{passwordError}</label>
       </div>
       <br />
       <div className={'buttonContainer'}>
-        <input className={'button'} type="button" onClick={onButtonClick} value={'Войти'} />
+        <input
+          className={'button'}
+          type="button"
+          onClick={handleSubmit}
+          value={'Войти'}
+        />
       </div>
       <div className={'buttonAuthBack'}>
-        <input className={'button'} type="button" onClick={onButtonClickBack} value={'Назад'} />
+        <input
+          className={'button'}
+          type="button"
+          onClick={onButtonClickBack}
+          value={'Назад'}
+        />
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default Login
+export default Login;

@@ -1,0 +1,110 @@
+.page {
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: linear-gradient(135deg, #a8e063, #56ab2f); /* Зелёный градиент */
+  padding: 20px;
+}
+
+.container {
+  max-width: 800px;
+  width: 100%;
+  padding: 30px;
+  font-family: Arial, sans-serif;
+  background-color: #fff;
+  border-radius: 10px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.title {
+  color: black;
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.avatarContainer {
+  text-align: center;
+}
+
+.avatar {
+  width: 180px;
+  height: 180px;
+  border-radius: 50%;
+  border: 4px solid black;
+  margin-bottom: 20px;
+}
+
+.profileInfo {
+  text-align: center;
+  line-height: 1.8;
+}
+
+.infoItem {
+  margin-bottom: 10px;
+}
+.infoText {
+  color: #555;
+}
+.buttonContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 20px;
+}
+.button,
+.logoutButton {
+  background-color: #4caf50;
+  color: #fff;
+  width: 200px;
+  margin: 10px 0;
+  padding: 10px;
+  font-size: 16px;
+  border-radius: 5px;
+  border: none;
+  cursor: pointer;
+}
+
+.button {
+  background-color: #4caf50;
+  color: white;
+}
+.logoutButton {
+  background-color: #ff4444;
+  color: white;
+}
+.editForm {
+  margin-top: 20px;
+}
+
+.inputGroup {
+  margin-bottom: 15px;
+}
+.label {
+  display: block;
+  margin-bottom: 5px;
+  font-weight: bold;
+  color: #333;
+}
+.input {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  font-size: 14px;
+}
+.logoutButton {
+  background-color: #ff4444;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  margin-top: 20px;
+  font-size: 16px;
+  display: block;
+  width: 100%;
+  bottom: 0;
+  position:relative;
+  text-align: center;
+}

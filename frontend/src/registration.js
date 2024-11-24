@@ -7,11 +7,16 @@ const Registration = (props) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [rePassword, setRePassword] = useState('');
-
+  const [surname,setSurname] = useState('');
+  const [patronymic, setPatronymic] = useState('');
+  const [login, setLogin] = useState('');
   const errors = {
     emailError: "Пожалуйста введите свою почту",
     emailCorrectError: "Пожалуйста введите правильный адрес эл.почты",
     
+    surnameError: "Фамилия пользователя должна содержать более 3 символов",
+    patronymicError: "Отчество пользователя должно содержать более 3 символов",
+
     usernameError: "Пожалуйста введите имя пользователя",
     usernameLengthError:"Имя пользователя должно содержать более 3 символов",
     
@@ -20,11 +25,12 @@ const Registration = (props) => {
     passwordLengthError:"Пароль должен состоять из 8 и более символов",
     correspondsPasswords: "Пароли не совпадают",
   }
-
+  const [rePasswordError, setRePasswordError] = useState('');
   const [emailError, setEmailError] = useState('');
   const [usernameError, setUsernameError] = useState('');
   const [passwordError, setPasswordError] = useState('');
-  const [rePasswordError, setRePasswordError] = useState('');
+  const [surnameError, setSurnameError] = useState('');
+  const [patronymicError, setPatronymicError] = useState('');
 
   const navigate = useNavigate();
 
@@ -38,14 +44,26 @@ const Registration = (props) => {
     setEmailError('');
     setPasswordError('');
     setUsernameError('');
+    setSurnameError('');
+    setPatronymicError('');
 
     if (username.trim() === '') {
       setUsernameError(errors.usernameError);
       return;
     }
 
+    if (surname.length < 3) {
+      setSurnameError(errors.surnameError);
+      return;
+    }
+
     if (username.length < 3) {
       setUsernameError(errors.usernameLengthError);
+      return;
+    }
+
+    if (patronymic.length < 3) {
+      setPatronymicError(errors.patronymicError);
       return;
     }
 
@@ -91,11 +109,40 @@ const Registration = (props) => {
       <div className={'inputContainer'}>
         <input
           value={username}
-          placeholder="Введите имя пользователя"
+          placeholder="Введите имя"
           onChange={(ev) => setUsername(ev.target.value)}
           className={'inputBox'}
         />
         <label className="errorLabel">{usernameError}</label>
+      </div>
+      <br />
+      <div className={'inputContainer'}>
+        <input
+          value={surname}
+          placeholder="Введите фамилию"
+          onChange={(ev) => setSurname(ev.target.value)}
+          className={'inputBox'}
+        />
+        <label className="errorLabel">{surnameError}</label>
+      </div>
+      <br />
+      <div className={'inputContainer'}>
+        <input
+          value={patronymic}
+          placeholder="Введите отчество"
+          onChange={(ev) => setPatronymic(ev.target.value)}
+          className={'inputBox'}
+        />
+        <label className="errorLabel">{patronymicError}</label>
+      </div>
+      <br />
+      <div className={'inputContainer'}>
+        <input
+          value={login}
+          placeholder="Введите логин"
+          onChange={(ev) => setLogin(ev.target.value)}
+          className={'inputBox'}
+        />
       </div>
       <br />
       <div className={'inputContainer'}>

@@ -1,305 +1,309 @@
-import React, { useState } from 'react';
-import { FaStar } from 'react-icons/fa';
+import React, { useState, useEffect } from 'react';
+import { Doughnut } from 'react-chartjs-2';
+import { Chart as ChartJS, ArcElement, Tooltip, Legend } from 'chart.js';
 import { useNavigate } from 'react-router-dom';
-import { Line } from 'react-chartjs-2';
-import { Chart as ChartJS, CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend } from 'chart.js';
+import { FaStar } from 'react-icons/fa';
+import axios from 'axios';
 
-ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend);
+// Регистрация необходимых компонентов для chart.js
+ChartJS.register(ArcElement, Tooltip, Legend);
 
-const ToDoList = () => {
+const ToDoList = ({ token }) => {
   const navigate = useNavigate();
-
-  // State for tasks and modal
-  const [tasks, setTasks] = useState([]);
+  const [isMenuOpen, setIsMenuOpen] = useState(false); // Состояние для открытия меню
   const [taskInput, setTaskInput] = useState('');
   const [descriptionInput, setDescriptionInput] = useState('');
   const [priorityInput, setPriorityInput] = useState('низкий');
   const [deadlineInput, setDeadlineInput] = useState('');
-  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [startTimeInput, setStartTimeInput] = useState(''); // Время начала
+  const [endTimeInput, setEndTimeInput] = useState(''); // Время окончания
+  const [tasks, setTasks] = useState([]); // Задачи, которые получаем с сервера
+  const [fetchedTasks, setFetchedTasks] = useState([]); // Состояние для задач, полученных с сервера
 
-  // State for profile modal and data
-  const [isProfileModalOpen, setIsProfileModalOpen] = useState(false);
-  const [isEditing, setIsEditing] = useState(false);
-  const [profileData, setProfileData] = useState({
-    firstName: 'Иван',
-    lastName: 'Иванов',
-    email: 'ivan.ivanov@example.com',
-    registrationDate: '12.03.2023',
-  });
-  const [editData, setEditData] = useState({ ...profileData });
+  useEffect(() => {
+    // Функция для запроса к API Flask
+    const fetchTasks = async () => {
+      try {
+        const token = localStorage.getItem('token');
+        if (!token) {
+          throw new Error('Токен отсутствует. Пользователь не авторизован.');
+        }
 
-  // Task management functions
-  const addTask = () => {
+        const response = await axios.get('http://127.0.0.1:5000/tasks', {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+
+        setFetchedTasks(response.data); // Сохраняем полученные данные в состояние
+      } catch (error) {
+        console.error('Ошибка при запросе к Flask API:', error);
+      }
+    };
+
+    fetchTasks();
+  }, []); // Выполнится один раз при загрузке компонента
+
+  const addTask = async () => {
     if (taskInput.trim() === '') {
       alert('Введите текст задачи!');
       return;
     }
-    if (!deadlineInput) {
-      alert('Укажите срок выполнения задачи!');
+    if (!deadlineInput || !startTimeInput || !endTimeInput) {
+      alert('Укажите все данные (срок выполнения, время начала и время окончания)!');
       return;
     }
-    setTasks([
-      ...tasks,
-      {
-        id: Date.now(),
-        text: taskInput,
-        description: descriptionInput,
-        priority: priorityInput,
-        deadline: deadlineInput,
-        completed: false,
-      },
-    ]);
-    setTaskInput('');
-    setDescriptionInput('');
-    setPriorityInput('низкий');
-    setDeadlineInput('');
+  
+    const newTask = {
+      title: taskInput,
+      description: descriptionInput,
+      priority: priorityInput,
+      deadline: deadlineInput,
+      startTime: startTimeInput, // Время начала
+      endTime: endTimeInput, // Время окончания
+      workspace_id: 1, // Example workspace_id, you might need to adjust this based on your app's requirements
+    };
+  
+    try {
+      const token = localStorage.getItem('token');
+      if (!token) {
+        throw new Error('Токен отсутствует. Пользователь не авторизован.');
+      }
+  
+      const response = await axios.post(
+        'http://127.0.0.1:5000/add_task',
+        newTask,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+  
+      if (response.status === 201) {
+        alert('Задача успешно добавлена!');
+        setTasks([
+          ...tasks,
+          {
+            id: Date.now(),
+            title: taskInput,
+            description: descriptionInput,
+            priority: priorityInput,
+            deadline: deadlineInput,
+            startTime: startTimeInput, // Время начала
+            endTime: endTimeInput, // Время окончания
+          },
+        ]);
+        // Clear input fields after adding the task
+        setTaskInput('');
+        setDescriptionInput('');
+        setPriorityInput('низкий');
+        setDeadlineInput('');
+        setStartTimeInput('');
+        setEndTimeInput('');
+      } else {
+        alert('Не удалось добавить задачу');
+      }
+    } catch (error) {
+      console.error('Ошибка при добавлении задачи:', error);
+      alert('Ошибка при добавлении задачи');
+    }
   };
+  
 
   const deleteTask = (id) => {
     setTasks(tasks.filter((task) => task.id !== id));
   };
 
-  const renderStars = (priority) => {
-    let starsCount = 0;
-    if (priority === 'низкий') starsCount = 1;
-    else if (priority === 'средний') starsCount = 2;
-    else if (priority === 'высокий') starsCount = 3;
+// Рассчитываем процент заполнения графика, если список задач пуст, процент равен 0
+const totalTasks = fetchedTasks.length; // Используем fetchedTasks вместо tasks
+const filledPercentage = totalTasks === 0 ? 0 : Math.min((totalTasks / 12) * 100, 100); // Прогресс заполнения (до 100%)
 
-    return (
-      <span className="priorityStars">
-        {[...Array(3)].map((_, index) => (
-          <FaStar
-            key={index}
-            color={index < starsCount ? '#ffc107' : '#e4e5e9'}
-            size={14}
-          />
-        ))}
-      </span>
-    );
-  };
+// Определение цвета сегмента графика в зависимости от количества задач
+let segmentColor = '#4caf50'; // Зеленый по умолчанию
+if (totalTasks > 4 && totalTasks <= 8) {
+  segmentColor = '#e0cb09'; // Желтый
+} else if (totalTasks > 8) {
+  segmentColor = '#f44336'; // Красный
+}
 
-  // Chart data generation
-  const groupTasksByDate = () => {
-    const taskCountPerDay = {};
-    tasks.forEach((task) => {
-      const date = new Date(task.deadline).toLocaleDateString();
-      taskCountPerDay[date] = taskCountPerDay[date] ? taskCountPerDay[date] + 1 : 1;
-    });
-    return taskCountPerDay;
-  };
-
-  const taskCountPerDay = groupTasksByDate();
-  const dates = Object.keys(taskCountPerDay);
-  const taskCounts = Object.values(taskCountPerDay);
-
-  const data = {
-    labels: dates,
-    datasets: [
-      {
-        label: 'Количество задач',
-        data: taskCounts,
-        fill: false,
-        borderColor: '#4caf50',
-        tension: 0.1,
-      },
-    ],
-  };
+const data = {
+  labels: ['Задачи'],
+  datasets: [
+    {
+      data: [filledPercentage, 100 - filledPercentage],
+      backgroundColor: [segmentColor, '#e4e5e9'],
+      borderColor: [segmentColor, '#e4e5e9'],
+      borderWidth: 1,
+    },
+  ],
+};
 
   const options = {
     responsive: true,
-    scales: {
-      x: {
-        title: {
-          display: true,
-          text: 'Дата',
+    plugins: {
+      tooltip: {
+        callbacks: {
+          label: function (context) {
+            return context.label + ': ' + context.raw + '%';
+          },
         },
       },
-      y: {
-        title: {
-          display: true,
-          text: 'Количество задач',
-        },
-        beginAtZero: true,
-      },
+    },
+    animation: {
+      animateScale: true,
+      animateRotate: true,
     },
   };
 
-  // Profile modal handling
-  const handleAvatarChange = (event) => {
-    const file = event.target.files[0];
-    if (file) {
-      const reader = new FileReader();
-      reader.onload = () => {
-        setEditData({ ...editData, avatar: reader.result });
-      };
-      reader.readAsDataURL(file);
-    }
-  };
-
-  const saveProfile = () => {
-    setProfileData(editData);
-    setIsEditing(false);
-  };
-
-  const onButtonClickBack = () => {
-    window.history.go(-1);
-    return false;
+  const formatDate = (dateString) => {
+    const date = new Date(dateString);
+    
+    // Корректируем время на -3 часа (сдвиг для вашего региона)
+    date.setHours(date.getHours() - 3);
+    
+    const options = {
+      day: 'numeric',
+      month: 'long',
+      hour: '2-digit',
+      minute: '2-digit',
+      hour12: false, // 24-часовой формат
+    };
+  
+    return date.toLocaleString('ru-RU', options).replace(',', '');
   };
 
   return (
     <div className="toDoContainer">
-      {/* Profile Button */}
-      <button onClick={() => setIsProfileModalOpen(true)} className="buttonProfile">
-        Профиль
+      {/* Кнопка для открытия/закрытия меню */}
+      <button onClick={() => setIsMenuOpen(!isMenuOpen)} className="menuButton">
+        ☰
       </button>
 
-      <p className="textToDoList">Создание списка задач</p>
+      {/* Сайдбар (выезжающее меню) */}
+      {isMenuOpen && (
+        <div className="sidebar">
+          <button className="menuItem" onClick={() => navigate('../profile')}>
+            Профиль
+          </button>
+          <button className="menuItem" onClick={() => navigate('../toDoList')}>
+            Нагрузки
+          </button>
+        </div>
+      )}
 
-      {/* Task Chart */}
-      <div className="chartContainer">
-        <Line data={data} options={options} />
-      </div>
-
-      {/* Task Input Section */}
-      <div className="taskInputContainer">
-        <input
-          type="text"
-          value={taskInput}
-          placeholder="Введите задачу"
-          onChange={(e) => setTaskInput(e.target.value)}
-          className="taskInput"
-        />
-        <textarea
-          value={descriptionInput}
-          placeholder="Введите описание задачи"
-          onChange={(e) => setDescriptionInput(e.target.value)}
-          className="descriptionInput"
-        />
-        <p className="input">Выберите приоритет</p>
-        <select
-          value={priorityInput}
-          onChange={(e) => setPriorityInput(e.target.value)}
-          className="priorityInput"
+      <div className="contentContainer">
+        {/* Контейнер для графика */}
+        <div
+          className="chartContainer"
+          style={{
+            width: '850px',
+            height: '850px',
+            margin: 50,
+            padding: 0,
+            position: 'absolute',
+            left: '0',
+            top: '0',
+          }}
         >
-          <option value="низкий">Похуй</option>
-          <option value="средний">Средний</option>
-          <option value="высокий">ЕБАТЬ сроки горят</option>
-        </select>
-        <div className="dataText">Укажите дату, до которой необходимо выполнить задание</div>
-        <input
-          type="date"
-          value={deadlineInput}
-          onChange={(e) => setDeadlineInput(e.target.value)}
-          className="deadlineInput"
-        />
-        <button onClick={addTask} className="addButton">
-          Добавить
-        </button>
-      </div>
-
-      {/* Open Tasks Modal Button */}
-      <button onClick={() => setIsModalOpen(true)} className="openModalButton">
-        Открыть задачи
-      </button>
-
-      {/* Task Modal */}
-      {isModalOpen && (
-        <div className="modalOverlay">
-          <div className="modalContent">
-            <button onClick={() => setIsModalOpen(false)} className="closeModalButton">X</button>
-            <ul className="taskList">
-              {tasks.map((task) => (
-                <li key={task.id} className={`taskItem ${task.completed ? 'completed' : ''}`}>
-                  <div className="taskContainer">
-                    <div>
-                      <div className="taskTitle">
-                        {task.text}{' '}
-                        <span className="starsContainer">
-                          ({renderStars(task.priority)})
-                        </span>
-                      </div>
-                      {task.description && (
-                        <div className="taskDescription">{task.description}</div>
-                      )}
-                      <div className="taskDeadline">
-                        Срок: {new Date(task.deadline).toLocaleDateString()}
-                      </div>
-                    </div>
-                    <button onClick={() => deleteTask(task.id)} className="deleteButton">X</button>
-                  </div>
-                </li>
-              ))}
-            </ul>
-          </div>
+          <Doughnut data={data} options={options} />
         </div>
-      )}
 
-      {/* Profile Modal */}
-      {isProfileModalOpen && (
-        <div className="modalOverlay">
-          <div className="modalContent">
-            <button onClick={() => setIsProfileModalOpen(false)} className="closeModalButton">X</button>
-            <div className="profileContent">
-              <h2>Профиль пользователя</h2>
-              <div className="profileAvatar">
-                <img
-                  src={profileData.avatar || 'https://via.placeholder.com/150'}
-                  alt="Аватар пользователя"
-                  className="avatarImage"
-                />
-                {isEditing && (
-                  <>
-                    <input
-                      type="file"
-                      accept="image/*"
-                      onChange={handleAvatarChange}
-                      className="avatarUploadInput"
-                    />
-                  </>
-                )}
-              </div>
-              {!isEditing ? (
-                <>
-                  <div className="profileField"><strong>Имя:</strong> {profileData.firstName}</div>
-                  <div className="profileField"><strong>Фамилия:</strong> {profileData.lastName}</div>
-                  <div className="profileField"><strong>Email:</strong> {profileData.email}</div>
-                  <div className="profileField"><strong>Дата регистрации:</strong> {profileData.registrationDate}</div>
-                  <button onClick={() => setIsEditing(true)} className="editButton">Редактировать</button>
-                </>
-              ) : (
-                <>
-                  <input
-                    type="text"
-                    value={editData.firstName}
-                    onChange={(e) => setEditData({ ...editData, firstName: e.target.value })}
-                    className="editField"
-                  />
-                  <input
-                    type="text"
-                    value={editData.lastName}
-                    onChange={(e) => setEditData({ ...editData, lastName: e.target.value })}
-                    className="editField"
-                  />
-                  <input
-                    type="email"
-                    value={editData.email}
-                    onChange={(e) => setEditData({ ...editData, email: e.target.value })}
-                    className="editField"
-                  />
-                  <button onClick={saveProfile} className="saveButton">Сохранить</button>
-                </>
-              )}
-            </div>
-          </div>
+        {/* Контейнер для списка задач */}
+        <div
+          className="taskContainer"
+          style={{
+            width: '850px',
+            height: '850px',
+            marginRight: 450,
+            marginTop: 120,
+            padding: 0,
+            position: 'absolute',
+            right: '0',
+            top: '0',
+          }}
+        >
+          <h2 className="taskTitle">Список задач</h2>
+          <ul className="taskList">
+            {fetchedTasks.map((task) => (
+              <li key={task.id} className="taskItem">
+                <div className="taskHeader">
+                  <strong>{task.title}</strong> <span className="priority">{task.priority}</span>
+                </div>
+                <p className="description">{task[2]}</p>
+                <div className="taskFooter">
+                  <span className="time">Время: {formatDate(task[4])}</span>
+                  <button className="deleteButton" onClick={() => deleteTask(task.id)}>
+                    Х
+                  </button>
+                </div>
+              </li>
+            ))}
+          </ul>
         </div>
-      )}
-      <div className={'buttonAuthBack'}>
-        <input
-          className={'button'}
-          type="button"
-          onClick={onButtonClickBack}
-          value={'Назад'}
-        />
+
+        {/* Контейнер для ввода новой задачи */}
+        <div
+          className="taskInputContainer"
+          style={{
+            marginRight: 75,
+            marginTop: 185,
+            padding: 0,
+            position: 'absolute',
+            right: '0',
+            top: '0',
+            background: 'white',
+            borderRadius: '8px',
+          }}
+        >
+          <input
+            type="text"
+            value={taskInput}
+            placeholder="Введите задачу"
+            onChange={(e) => setTaskInput(e.target.value)}
+            className="taskInput"
+          />
+          <textarea
+            value={descriptionInput}
+            placeholder="Введите описание задачи"
+            onChange={(e) => setDescriptionInput(e.target.value)}
+            className="descriptionInput"
+          />
+          <p className="input">Выберите приоритет</p>
+          <select
+            value={priorityInput}
+            onChange={(e) => setPriorityInput(e.target.value)}
+            className="priorityInput"
+          >
+            <option value="Low">Низкий</option>
+            <option value="Medium">Средний</option>
+            <option value="High">Высокий</option>
+          </select>
+          <div className="dataText">Укажите срок сдачи задания</div>
+          <input
+            type="date"
+            value={deadlineInput}
+            onChange={(e) => setDeadlineInput(e.target.value)}
+            className="deadlineInput"
+          />
+          <div className="dataText">Укажите время начала задачи</div>
+          <input
+            type="time"
+            value={startTimeInput}
+            onChange={(e) => setStartTimeInput(e.target.value)}
+            className="startTimeInput"
+          />
+          <div className="dataText">Укажите время окончания задачи</div>
+          <input
+            type="time"
+            value={endTimeInput}
+            onChange={(e) => setEndTimeInput(e.target.value)}
+            className="endTimeInput"
+          />
+          <button onClick={addTask} className="addButton">
+            Добавить
+          </button>
+        </div>
       </div>
     </div>
   );

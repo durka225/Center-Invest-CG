@@ -1,0 +1,79 @@
+.taskPage {
+    min-height: 100vh;
+    background: linear-gradient(135deg, #56ab2f, #a8e063);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+  }
+  
+  .taskContainer {
+    max-width: 500px;
+    width: 100%;
+    max-height: 700px;
+    background-color: #fff;
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  }
+  
+  .taskTitle {
+    text-align: center;
+    color: #4caf50;
+    margin-left: 9%;
+    margin-bottom: 5%;
+    font-size: 250%; 
+  }
+  
+  .taskList {
+    list-style: none;
+    padding: 0;
+    height: 82%;
+  }
+  
+  .taskItem {
+    background-color: #f9f9f9;
+    margin-bottom: 15px;
+    padding: 15px;
+    border-radius: 5px;
+    border-left: 5px solid #4caf50;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  }
+  
+  .taskHeader {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  
+  .priority {
+    margin-left: 20px;
+    font-size: 14px;
+    color: #888;
+  }
+  
+  .description {
+    margin: 10px 0;
+    color: #555;
+  }
+  
+  .taskFooter {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  
+  .deadline {
+    font-size: 14px;
+    color: #999;
+  }
+  
+  .deleteButton {
+    background-color: #ff4444;
+    color: white;
+    padding: 8px 16px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  

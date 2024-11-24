@@ -5,7 +5,8 @@ import Registration from './registration'
 import './App.css'
 import { useEffect, useState } from 'react'
 import ToDoList from './toDoList'
-import Profile from './profile'
+import Profile from './Profile'
+import List from './List'
 
 function App() {
   const [loggedIn, setLoggedIn] = useState(false)
@@ -22,6 +23,7 @@ function App() {
           <Route path="/registration" element={<Registration setLoggedIn={setLoggedIn} setEmail={setEmail} />} />
           <Route path="/toDoList" element={<ToDoList />} />
           <Route path="/profile" element={<Profile />} />
+          <Route path="/tasks" element={<List />} />
         </Routes>
       </BrowserRouter>
     </div>

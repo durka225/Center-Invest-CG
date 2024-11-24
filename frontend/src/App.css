@@ -1,4 +1,5 @@
 .mainContainer {
+  background: linear-gradient(to bottom, #a6c0fe, #f68084);
   flex-direction: column;
   display: flex;
   align-items: center;
@@ -162,7 +163,7 @@
 }
 .App {
   text-align: center;
-  background-color: rgb(255, 255, 255);
+  background: linear-gradient(to bottom, #a6c0fe, #f68084);
 }
 
 .textToDoList{
@@ -174,7 +175,15 @@
   font: bolder;
 }
 .toDoContainer{
-  background-color: rgb(255, 255, 255);
+  background: linear-gradient(to bottom, #a6c0fe, #f68084);
+  flex-direction: column;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+}
+.toDoContainer1{
+  background: rgb(255, 255, 255);
   flex-direction: column;
   display: flex;
   align-items: center;
@@ -206,6 +215,15 @@
   border-radius: 8px;
   cursor: pointer;
 }
+.taskContainer {
+  max-width: 500px;
+  width: 100%;
+  max-height: 700px;
+  background-color: #fff;
+  padding: 30px;
+  border-radius: 10px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
 .deleteButton{
   justify-content: space-between;
   border: none;
@@ -222,10 +240,11 @@
 }
 
 .taskTitle {
-  font-size: 18px;
-  font-weight: bold;
-  color: #333;
-  margin-bottom: 5px;
+  text-align: center;
+  color: #4caf50;
+  margin-left: 9%;
+  margin-bottom: 5%;
+  font-size: 250%; 
 }
 
 .taskPriority {
@@ -257,13 +276,15 @@
   text-align: center;
 }
 .taskList {
-  max-height: 400px;
+  max-height: 1000px;
   overflow-y: auto;
   overflow-x: hidden;
   padding: 0;
-  margin: 0 0 20px 0;
+  margin: 0 0 10px 0;
   list-style: none;
+  height: 100%;
 }
+
 
 
 .toDoContainer {
@@ -315,10 +336,6 @@
   margin-bottom: 10px;
 }
 
-.taskList {
-  list-style: none;
-  padding: 0;
-}
 
 .taskDetails {
   margin-bottom: 10px;
@@ -349,26 +366,15 @@
   color: red;
 }
 
-.taskContainer {
-  display: flex;
-  justify-content: space-between;
-  align-items: center; 
-  width: 100%;
-  box-sizing: border-box;
-}
+
 
 .taskItem {
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-start;
-  align-items: center; 
-  margin-bottom: 10px;
-  background: #f9f9f9;
-  padding: 10px;
-  border-radius: 8px;
+  background-color: #f9f9f9;
+  margin-bottom: 15px;
+  padding: 15px;
+  border-radius: 5px;
+  border-left: 5px solid #4caf50;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  width: 100%;
-  word-break: break-word;
 }
 
 .deleteButton {
@@ -390,10 +396,7 @@
   background-color: #be2837;
 }
 
-.completed .taskItem {
-  text-decoration: line-through;
-  color: gray;
-}
+
 
 .priorityInput {
   padding: 10px;
@@ -971,4 +974,165 @@
   padding: 10px;
   border: none;
   cursor: pointer;
+}
+.color-hint {
+  background: linear-gradient(blue, 10%, pink);
+}
+.simple-linear {
+  background: linear-gradient(blue, pink);
+}
+.menuButton {
+  font-size: 30px;
+  cursor: pointer;
+  position: absolute;
+  top: 20px;
+  left: 20px;
+  z-index: 1100;
+  background-color: transparent;
+  border: none;
+  color: #000000;
+  padding: 10px 15px; 
+  cursor: pointer;
+  font-size: 48px; 
+  text-align: center;
+}
+.chartContainer {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 30px;
+  background: rgba(0, 0, 0, 0);
+  fill: rgb(59, 58, 58);
+}
+.menuItem.active {
+  background-color: #4caf50; /* Подсвеченная кнопка */
+}
+.menuItem {
+  background: none;
+  color: white;
+  border: none;
+  padding: 5px;
+  text-align: left;
+  cursor: pointer;
+  font-size: 18px;
+  margin-bottom: 5px;
+  width: 100%;
+  transition: background-color 0.3s ease;  /* Плавное изменение фона */
+}
+.sidebar button:hover {
+  background-color: #b8b8b8;  /* Цвет фона при наведении */
+  transform: scale(1.05); 
+  border-radius: 8px; /* Легкое увеличение при наведении */
+}
+
+.sidebar button:active {
+  background-color: #cacaca;  /* Цвет фона при нажатии */
+  transform: scale(0.98); 
+  border-radius: 8px; /* Немного уменьшить кнопку при клике */
+}
+.sidebar button {
+   /* Увеличиваем внутренние отступы */
+  font-size: 20px;  /* Подстраиваем размер шрифта */
+  background-color: #cacaca;  /* Цвет фона кнопок */
+  color: rgb(0, 0, 0);
+  border-radius: 8px;
+
+  
+  transition: background-color 0.3s ease, transform 0.2s ease; /* Плавные переходы */
+}
+.sidebar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 250px;
+  height: 100%;
+  background-color: #ffffff;
+  color: rgb(0, 0, 0);
+  display: flex;
+  flex-direction: column;
+  padding: 25px;
+  z-index: 1000;
+}
+
+
+
+
+
+/* Для списка задач */
+.taskItem {
+  border-radius: 8px;
+  background: #f8f9fa;
+  padding: 15px;
+  margin-bottom: 10px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1), 0 -2px 5px rgba(255, 255, 255, 0.2);
+  transition: all 0.3s ease;
+}
+
+.taskItem:hover {
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2), 0 -4px 8px rgba(255, 255, 255, 0.2);
+  transform: translateY(-3px);
+}
+
+.priorityStars svg {
+  transition: transform 0.2s ease;
+}
+
+.priorityStars svg:hover {
+  transform: scale(1.2);
+}
+
+
+
+
+
+/* Сдвигаем кнопки на 20px вниз */
+.sidebar {
+  padding-top: 110px;
+}
+
+/* Уменьшаем расстояние между кнопками на 1.5 раза */
+.menuItem {
+  margin-bottom: 10px; /* Примерное уменьшение расстояния, подберите значение */
+}
+
+/* Если используется flexbox для вертикального расположения кнопок в sidebar */
+.sidebar {
+  display: flex;
+  flex-direction: column;
+  gap: 5px; /* Уменьшаем расстояние между элементами */
+}
+
+
+/* Стили по умолчанию для больших экранов */
+
+/* Стили для маленьких экранов (например, мобильных телефонов) */
+@media (max-width: 768px) { /* Измените точку останова по мере необходимости */
+  .mainContainer {
+    padding: 1rem; /* Уменьшите отступы */
+    font-size: 16px; /* Настройте размер шрифта */
+  }
+  .titleContainer {
+    font-size: 24px; /* Заголовок меньшего размера */
+  }
+  .inputBox {
+    width: 100%; /* Поля ввода занимают всю ширину */
+  }
+  .button {
+    width: 100%; /* Кнопки занимают всю ширину */
+  }
+  /* ... другие мобильные стили ... */
+  .chartContainer, .taskContainer, .taskInputContainer {
+    width: 90vw; /* Занимают большую часть ширины экрана */
+    height: auto;  /* Позволяем высоте подстраиваться под контент */
+    margin: 10px auto; /* Центрируем контейнеры */
+    position: static; /* Убираем абсолютное позиционирование */
+    right: auto; 
+    top: auto; 
+    left: auto; /* Сбрасываем позиционирование */
+  }
+  .taskList {
+    height: auto; /* Позволяем списку задач расти естественно */
+  }
+  .sidebar {
+    width: 80vw; /* Настраиваем ширину боковой панели */
+  }
 }
