@@ -37,7 +37,7 @@ class UserLogin():
         return int(self.__user[4])
     def get_progress(self):
         return int(self.__user[4])
-    def get_avatar(self):
+    def get_workspace(self):
         return self.__user[8]
     def get_login(self):
         return str(self.__user[5])

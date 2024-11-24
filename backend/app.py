@@ -16,7 +16,7 @@ from datetime import timedelta
 
 # Инициализация Flask приложения
 app = Flask(__name__)
-CORS(app, origins=["http://localhost:3000"], supports_credentials=True)
+CORS(app, origins=["http://localhost:3001"], supports_credentials=True)
 app.secret_key = 'iewqenwqbdksclklhfd1312asd'  # Для Flask-Login и сессий
 app.config['JWT_SECRET_KEY'] = 'fdsffrdwwvwbv1232dfdwsf'
 app.config['JWT_TOKEN_LOCATION'] = ['headers']
